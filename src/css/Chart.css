@@ -1,0 +1,16 @@
+.chart {
+  width: 46%;
+  margin: 2%;
+  height: 400px;
+  /* background-color: #ff9800; */
+  float: left;
+  border-radius: 5px;
+}
+
+/* screen size 0 ~ 500px mobile */
+@media (max-width: 500px) {
+  .chart {
+    width: 98%;
+    display: block;
+  }
+}

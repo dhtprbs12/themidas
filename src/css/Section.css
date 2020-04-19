@@ -1,0 +1,14 @@
+.section {
+  overflow: hidden;
+  width: 90%;
+  /* padding: 2%; */
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 100px;
+}
+
+@media (max-width: 1220px) {
+  .section {
+    margin-top: 170px;
+  }
+}
