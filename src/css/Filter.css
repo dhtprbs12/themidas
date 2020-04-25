@@ -1,0 +1,31 @@
+.filter {
+  width: 20%;
+  height: 100%;
+}
+
+.filter-container{
+  margin-top: 25px;
+  padding: 20px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
+  overflow: scroll;
+  height: 500px;
+}
+
+h4{
+  margin-bottom: 10px;
+}
+
+.filter-types{
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.filter-period{
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.filter-sectors{
+  width: 100%;
+  margin-bottom: 50px;
+}

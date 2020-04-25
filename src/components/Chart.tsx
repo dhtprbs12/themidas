@@ -12,6 +12,7 @@ import {
   Label,
   Text
 } from "recharts";
+import { API_CALL } from "../auth/apiCall";
 
 interface ChartProps {
   symbol: string;
@@ -28,35 +29,17 @@ const Chart: React.FC<ChartProps> = props => {
 
   /* Same */
   // function fetchStock() {}
-  const fetchStock = async (symbol: string) => {
-    const API_KEY = "6VM7V9ALHFS526TX";
-    const API_CALL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&outputsize=compact&apikey=${API_KEY}`;
-
-    const stockArr: Array<object> = [];
-
-    let response = await fetch(API_CALL);
-    let data = await response.json();
-    for (var key in data["Time Series (Daily)"]) {
-      const obj = {
-        date: key,
-        open: data["Time Series (Daily)"][key]["1. open"],
-        high: data["Time Series (Daily)"][key]["2. high"],
-        low: data["Time Series (Daily)"][key]["3. low"],
-        close: data["Time Series (Daily)"][key]["4. close"]
-      };
-      stockArr.push(obj);
-    }
-    stockArr.reverse();
-    setObjects(stockArr);
+  const fetchStock = (symbol: string) => {
+    API_CALL(symbol)
+      .then(data => setObjects(data))
+      .catch(err => console.log(err));
   };
 
   useEffect(() => {
     if (!objects.length) {
       fetchStock(props.symbol);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [objects.length]);
+  }, [objects.length, props.symbol]);
 
   return (
     <div className="chart">

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../css/Search.css";
 import searchImage from "../images/search.svg";
+import Filter from './Filter'
 
 const Search: React.FC = props => {
   const array: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -10,6 +11,11 @@ const Search: React.FC = props => {
     setInfo(event.target.textContent);
   };
 
+  const onInput = (event) => {
+    event.preventDefault()
+    console.log(event.target.value)
+  }
+
   return (
     <div className="search">
       <div className="search-top">
@@ -17,14 +23,16 @@ const Search: React.FC = props => {
           type="text"
           className="form-control"
           placeholder="Search a company..."
+          onChange={onInput}
         />
 
         <img src={searchImage} alt="search-img" />
       </div>
       <div className="search-bottom">
-        <div className="search-bottom-left" onClick={elementClick}>
+        <Filter />
+        <div className="search-bottom-left">
           {array.map(index => (
-            <div key={index} className="search-element">
+            <div key={index} className="search-element" onClick={elementClick}>
               {`This is div ${index}`}
             </div>
           ))}
