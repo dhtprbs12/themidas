@@ -1,33 +1,101 @@
-import { API_KEY } from "./apiKey";
+export const INTRA_DAILY_API_CALL = (symbol: string) => {
+  const API_CALL = `http://localhost:4000/intradaily/${symbol}`;
 
-export const API_CALL = async (symbol: string) => {
-  const stockArr: Array<object> = [];
+  return new Promise((resolve, reject) => {
+    fetch(API_CALL)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        resolve(res.json());
+      })
+      .catch(err => {
+        reject(err);
+      })
+  })
+};
 
-  const API_CALL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&outputsize=compact&apikey=${API_KEY}`;
+export const WEEKLY_API_CALL = (symbol: string) => {
+  const API_CALL = `http://localhost:4000/weekly/${symbol}`;
 
-  const response = await fetch(API_CALL)
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-      return Promise.resolve(res.json());
-    })
-    .catch(err => {
-      return Promise.reject(err);
-    });
+  return new Promise((resolve, reject) => {
+    fetch(API_CALL)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        resolve(res.json());
+      })
+      .catch(err => {
+        reject(err);
+      })
+  })
+};
 
-  if (response["Time Series (Daily)"] !== undefined) {
-    for (var key in response["Time Series (Daily)"]) {
-      const obj = {
-        date: key,
-        open: response["Time Series (Daily)"][key]["1. open"],
-        high: response["Time Series (Daily)"][key]["2. high"],
-        low: response["Time Series (Daily)"][key]["3. low"],
-        close: response["Time Series (Daily)"][key]["4. close"]
-      };
-      stockArr.push(obj);
-    }
-    return stockArr.reverse();
-  }
-  return response;
+export const MONTHLY_API_CALL = (symbol: string, month: number) => {
+  const API_CALL = `http://localhost:4000/monthly/${symbol}/${month}`;
+
+  return new Promise((resolve, reject) => {
+    fetch(API_CALL)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        resolve(res.json());
+      })
+      .catch(err => {
+        reject(err);
+      })
+  })
+};
+
+export const YEARLY_API_CALL = (symbol: string) => {
+  const API_CALL = `http://localhost:4000/yearly/${symbol}`;
+
+  return new Promise((resolve, reject) => {
+    fetch(API_CALL)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        resolve(res.json());
+      })
+      .catch(err => {
+        reject(err);
+      })
+  })
+};
+
+export const FIVE_YEAR_API_CALL = (symbol: string) => {
+  const API_CALL = `http://localhost:4000/five-yearly/${symbol}`;
+
+  return new Promise((resolve, reject) => {
+    fetch(API_CALL)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        resolve(res.json());
+      })
+      .catch(err => {
+        reject(err);
+      })
+  })
+};
+
+export const OVER_TWENTY_YEAR_API_CALL = (symbol: string) => {
+  const API_CALL = `http://localhost:4000/over-twenty-year/${symbol}`;
+
+  return new Promise((resolve, reject) => {
+    fetch(API_CALL)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        resolve(res.json());
+      })
+      .catch(err => {
+        reject(err);
+      })
+  })
 };

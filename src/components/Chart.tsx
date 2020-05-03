@@ -1,87 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../css/Chart.css";
 import {
   LineChart,
   Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  ReferenceLine,
   Tooltip,
-  Legend,
   ResponsiveContainer,
-  Label,
-  Text
 } from "recharts";
-import { API_CALL } from "../auth/apiCall";
+import { Stock } from './Search'
 
 interface ChartProps {
-  symbol: string;
-  name: string;
+  array: Array<Stock>
+}
+
+function CustomTooltip({ payload, active }) {
+  if (active) {
+    return (
+      <div className="custom-tooltip">
+        <h4>{payload[0].payload.date}</h4>
+        <p className="price">{`$ ${Number(payload[0].payload.close).toFixed(2)}`}</p>
+        <p className="desc">Anything you want can be displayed here.</p>
+      </div>
+    );
+  }
+
+  return null;
 }
 
 const Chart: React.FC<ChartProps> = props => {
-  /* 
-  Referece to initialize array using hook
-  useState<Array<number>>([]);
-  useState<number[]>([]);
-   */
-  const [objects, setObjects] = useState<Array<object>>([]);
 
-  /* Same */
-  // function fetchStock() {}
-  const fetchStock = (symbol: string) => {
-    API_CALL(symbol)
-      .then(data => setObjects(data))
-      .catch(err => console.log(err));
-  };
-
-  useEffect(() => {
-    if (!objects.length) {
-      fetchStock(props.symbol);
-    }
-  }, [objects.length, props.symbol]);
-
+  const { array } = props
+  let average = 0
+  for (let i = 0; i < array.length; i++) {
+    average = average + Number(array[i].close)
+  }
+  average = Number((average / array.length).toFixed(2))
   return (
     <div className="chart">
       <ResponsiveContainer width="100%" height={400}>
         <LineChart
-          data={objects}
-          margin={{
-            top: 5,
-            right: 5,
-            left: 5,
-            bottom: 15
-          }}
+          data={array}
         >
-          <CartesianGrid strokeDasharray="6 6" />
-          <XAxis dataKey="date">
-            <Label
-              value={props.name}
-              dy={10}
-              offset={0}
-              position="insideBottom"
-            />
-          </XAxis>
-          <YAxis
-            label={
-              <Text x={0} y={0} dx={15} dy={200} offset={0} angle={-90}>
-                Price
-              </Text>
-            }
-          ></YAxis>
-          <Tooltip />
-          <Legend verticalAlign="top" height={36} />
+          {/*  Tooltip: when mouse over dot it displays information*/}
+          <Tooltip content={CustomTooltip} wrapperStyle={{ backgroundColor: "#F1F1F1" }} />
+          <ReferenceLine y={average} label={`Avg: ${average}`} stroke="lightgray" />
           <Line
-            type="monotone"
-            dataKey="open"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-          />
-          <Line
+            strokeWidth={2}
             type="monotone"
             dataKey="close"
-            stroke="#82ca9d"
-            activeDot={{ r: 8 }}
+            stroke="red"
+            dot={false}
           />
         </LineChart>
       </ResponsiveContainer>

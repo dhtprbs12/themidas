@@ -1,0 +1,16 @@
+.companyDetail{
+  text-align: center;
+}
+
+.MuiFormGroup-root{
+  display: inline-block !important;
+}
+.MuiFormControlLabel-root{
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.MuiFormControlLabel-labelPlacementBottom{
+  padding: 0 !important;
+  margin: 0 !important;
+}

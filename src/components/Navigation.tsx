@@ -2,13 +2,16 @@ import React from "react";
 import "../css/Header.css";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import About from "./About";
-import Search from "./Search";
+import FilterSearch from "./FilterSearch";
 import Home from "./Home";
 import Contact from "./Contact";
+import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory();
 
 const Navigation: React.FC = props => {
   return (
-    <Router>
+    <Router history={history}>
       <header className="header">
         <div className="row">
           <div className="header-center">
@@ -39,7 +42,7 @@ const Navigation: React.FC = props => {
             </div>
             <Route path="/" exact strict render={() => <Home />} />
             <Route path="/about" exact strict render={() => <About />} />
-            <Route path="/markets" exact strict render={() => <Search />} />
+            <Route path="/markets" exact strict render={() => <FilterSearch />} />
             <Route path="/contact" exact strict render={() => <Contact />} />
           </div>
         </div>

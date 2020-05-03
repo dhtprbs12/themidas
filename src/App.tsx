@@ -22,8 +22,8 @@ export default App;
 // import { REMOVE_TODO } from "./mutation/removeTodos";
 
 // function App() {
-//   const { data, loading, error } = useQuery(READ_TODOS);
-//   let input;
+  // const { data, loading, error } = useQuery(READ_TODOS);
+  // let input;
 //   const [createTodo] = useMutation(CREATE_TODO);
 //   const [deleteTodo] = useMutation(REMOVE_TODO);
 
