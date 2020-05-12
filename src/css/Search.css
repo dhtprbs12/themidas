@@ -75,12 +75,6 @@
     left margin is 15px
   */
   margin: 35px 15px 0px 15px;
-  line-height: 16px;
-  text-align: justify;
-}
-
-.search-bottom-right > div {
-  margin: 10px;
 }
 
 .search-element {
@@ -93,6 +87,22 @@
   -o-transition: all 300ms ease;
   transition: all 300ms ease;
   font-family: "Abel";
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.MuiButtonBase-root{
+  margin-bottom: 0 !important;
+  cursor: pointer;
+}
+
+.MuiList-padding{
+  padding: 0 !important;
+}
+
+.MuiListItem-root{
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .search-element:hover {

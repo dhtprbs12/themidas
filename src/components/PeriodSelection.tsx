@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
-import '../css/CompanyDetail.css'
 
 type Props = {
   onChange: (event) => void
+  defaultValue: string
 }
 
 const PeriodSelection: React.FC<Props> = (props: Props) => {
-  const { onChange } = props
+  const { onChange, defaultValue } = props
+
   return (
-    <RadioGroup onChange={onChange} row aria-label="position" name="position" defaultValue="1D">
+    <RadioGroup onChange={onChange} row aria-label="position" name="position" value={defaultValue}>
       <FormControlLabel
         value="1D"
         control={<Radio color="primary" size="small" />}

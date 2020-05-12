@@ -1,24 +1,17 @@
 import React from "react";
 import Chart from './Chart'
-import PeriodSelection from './PeriodSelection'
-import { Stock } from './Search'
-
+import "../css/CompanyDetail.css";
 
 type Props = {
   symbol: string
   name: string
-  array: Array<Stock>
-  onChange: (event) => void
 }
 
 const CompanyDetail: React.FC<Props> = (props: Props) => {
-  const { symbol, name, array, onChange } = props
+  const { symbol, name } = props
+
   return (
-    <div className='companyDetail'>
-      <h3>{name}</h3>
-      <Chart array={array} />
-      <PeriodSelection onChange={onChange} />
-    </div>
+    <Chart symbol={symbol} name={name} />
   )
 }
 

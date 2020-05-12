@@ -15,6 +15,23 @@ export const INTRA_DAILY_API_CALL = (symbol: string) => {
   })
 };
 
+export const DAILY_API_CALL = (symbol: string) => {
+  const API_CALL = `http://localhost:4000/daily/${symbol}`;
+
+  return new Promise((resolve, reject) => {
+    fetch(API_CALL)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        resolve(res.json());
+      })
+      .catch(err => {
+        reject(err);
+      })
+  })
+};
+
 export const WEEKLY_API_CALL = (symbol: string) => {
   const API_CALL = `http://localhost:4000/weekly/${symbol}`;
 
