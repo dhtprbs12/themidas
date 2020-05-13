@@ -33,6 +33,8 @@
 
 .chart-statistic-container{
   width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
 /* screen size 0 ~ 500px mobile */

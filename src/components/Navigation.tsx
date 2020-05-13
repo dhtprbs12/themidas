@@ -40,13 +40,13 @@ const Navigation: React.FC = props => {
                 </ul>
               </nav>
             </div>
-            <Route path="/" exact strict render={() => <Home />} />
-            <Route path="/about" exact strict render={() => <About />} />
-            <Route path="/markets" exact strict render={() => <FilterSearch />} />
-            <Route path="/contact" exact strict render={() => <Contact />} />
           </div>
         </div>
       </header>
+      <Route path="/" exact strict render={() => <Home />} />
+      <Route path="/about" exact strict render={() => <About />} />
+      <Route path="/markets" exact strict render={() => <FilterSearch />} />
+      <Route path="/contact" exact strict render={() => <Contact />} />
     </Router>
   );
 };

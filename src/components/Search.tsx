@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../css/Search.css";
 import searchImage from "../images/search.svg";
 import { useApolloClient } from "@apollo/react-hooks";
@@ -91,8 +91,8 @@ const Search: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="search">
-      <div className="search-top">
-        <Fragment>
+      <div className="search-left" onScroll={handleScroll}>
+        <div className='search-input'>
           <input
             type="text"
             className="form-control"
@@ -101,18 +101,17 @@ const Search: React.FC<Props> = (props: Props) => {
             ref={inputRef}
           />
           <img src={searchImage} alt="search-img" />
-        </Fragment>
-      </div>
-      <div className="search-bottom">
-        <div className="search-bottom-left" onScroll={handleScroll}>
+        </div>
+        <div className='search-list'>
           {companyArr.length > 0 ? companyArr.map((company: Company, index: number) => (
             <SearchElement key={index} data-index={company.id} name={company.name} symbol={company.symbol} companyClick={companyClick} industry={company.industry} />
           )) : <h3>No results found</h3>}
         </div>
-        <div className="search-bottom-right">
-          <CompanyDetail symbol={companySymbol} name={companyName}
-          />
-        </div>
+
+      </div>
+      <div className="search-right">
+        <CompanyDetail symbol={companySymbol} name={companyName}
+        />
       </div>
     </div>
   );
