@@ -10,6 +10,7 @@ import PeriodSelection from './PeriodSelection'
 import { INTRA_DAILY_API_CALL, WEEKLY_API_CALL, MONTHLY_API_CALL, YEARLY_API_CALL, FIVE_YEAR_API_CALL, OVER_TWENTY_YEAR_API_CALL } from "../auth/apiCall";
 import StockInfo from "./StockInfo";
 import { Grid } from "@material-ui/core";
+import CompanyCalculator from './CompanyCalculator'
 
 
 export type Stock = {
@@ -77,7 +78,7 @@ const Chart: React.FC<ChartProps> = props => {
       }
 
     }
-    API_CALL()
+    //API_CALL()
     setLoading(false)
   }, [symbol])
 
@@ -141,41 +142,44 @@ const Chart: React.FC<ChartProps> = props => {
   }
 
   return (
-    <Grid className="chart" container spacing={3}>
-      <Grid item className='chart-container'>
-        <h3 className='chart-title'>{name}</h3>
-        {loading ?
-          <ReactLoading height={250} className='loader' type={'bars'} color="lightgray" />
-          :
-          <div style={{ width: '100%', height: 250 }}>
-            <ResponsiveContainer width={"100%"} minHeight={250} >
-              <LineChart
-                data={array}
-                domain={[0, 'dataMax']}
-                margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
-              >
-                {/*  Tooltip: when mouse over dot it displays information*/}
-                <Tooltip content={CustomTooltip} wrapperStyle={{ backgroundColor: "#F1F1F1" }} />
-                <Line
-                  strokeWidth={2}
-                  type="monotone"
-                  dataKey="close"
-                  stroke="#00cc96"
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+    <>
+      <CompanyCalculator />
+      <Grid className="chart" container spacing={3}>
+        <Grid item className='chart-container'>
+          <h3 className='chart-title'>{name}</h3>
+          {loading ?
+            <ReactLoading height={250} className='loader' type={'bars'} color="lightgray" />
+            :
+            <div style={{ width: '100%', height: 250 }}>
+              <ResponsiveContainer width={"100%"} minHeight={250} >
+                <LineChart
+                  data={array}
+                  domain={[0, 'dataMax']}
+                  margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+                >
+                  {/*  Tooltip: when mouse over dot it displays information*/}
+                  <Tooltip content={CustomTooltip} wrapperStyle={{ backgroundColor: "#F1F1F1" }} />
+                  <Line
+                    strokeWidth={2}
+                    type="monotone"
+                    dataKey="close"
+                    stroke="#00cc96"
+                    dot={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
 
-        }
-        <Grid className='periodSelection'>
-          <PeriodSelection onChange={onChange} defaultValue={defaultValue} />
+          }
+          <Grid className='periodSelection'>
+            <PeriodSelection onChange={onChange} defaultValue={defaultValue} />
+          </Grid>
+        </Grid>
+        <Grid item className='chart-statistic-container'>
+          {symbol !== '' && <StockInfo symbol={symbol} />}
         </Grid>
       </Grid>
-      <Grid item className='chart-statistic-container'>
-        {symbol !== '' && <StockInfo symbol={symbol} />}
-      </Grid>
-    </Grid>
+    </>
   );
 };
 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Stock } from './Chart'
 import { Grid, List, ListItem, ListItemText, Divider } from '@material-ui/core';
 import { DAILY_API_CALL } from "../auth/apiCall";
-import { convertToNumber } from './Chart'
 
 /*
  * Monthly-Api-Call uses Daily adjusted api
@@ -21,13 +20,6 @@ const StockInfo: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     async function CALL_API() {
       const data = await DAILY_API_CALL(symbol) as Array<Stock>
-      const array = await convertToNumber(data)
-      let temp = 0;
-      for (let i = 0; i < array.length; i) {
-        temp = temp + array[i].close;
-      }
-      temp = temp / array.length
-      setAverage(temp)
       setStockInfo(data[0])
     }
     CALL_API()

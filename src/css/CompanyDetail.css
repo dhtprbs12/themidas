@@ -20,6 +20,9 @@
   padding: 0 !important;
   margin: 0 !important;
 }
+.MuiExpansionPanelDetails-root{
+  display: block !important;
+}
 
 .MuiFormControlLabel-labelPlacementBottom{
   padding: 0 !important;
