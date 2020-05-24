@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css?family=Abel&display=swap");
+
+.header {
+  display: grid;
+  grid-template-areas: 'logo nav';
+  margin-bottom: 80px;
+}
+
+/*
+*Site name vertically align
+*/
+.siteName{
+  display: flex;
+  align-items: center; 
+}
+
+.nav{
+  grid-area: nav;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  align-items: center;
+  justify-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: #222222;
+}
+
+a:hover {
+  color: gray;
+}
+
+.responsible-header-image{
+  display: none;
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: black;
+  box-shadow: none;
+  padding: 0 !important; 
+  margin: 0 !important;
+}
+
+.MuiSvgIcon-root{
+  float: right;
+}
+
+@media(max-width: 500px){
+  .header{
+    grid-template-areas: 'logo burger' 'nav nav';
+  }
+
+  .nav{
+    grid-template-rows: repeat(4,auto);
+    grid-template-columns: none;
+    row-gap: 20px;
+    background-color: #222222;
+  }
+
+  .nav > a {
+  color: white;
+  }
+
+  .nav > a:hover {
+  color: gray;
+}
+
+  .responsible-header-image{
+    display: block;
+    
+  }
+}
