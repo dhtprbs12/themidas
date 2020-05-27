@@ -39,13 +39,17 @@ a:hover {
   box-shadow: none;
   padding: 0 !important; 
   margin: 0 !important;
+  border: none;
+  outline: 0 !important;
+  /* remove default blue background color when button is clicked*/
+  -webkit-tap-highlight-color: transparent;
 }
 
 .MuiSvgIcon-root{
   float: right;
 }
 
-@media(max-width: 500px){
+@media(max-width: 1200px){
   .header{
     grid-template-areas: 'logo burger' 'nav nav';
   }
@@ -67,6 +71,5 @@ a:hover {
 
   .responsible-header-image{
     display: block;
-    
   }
 }

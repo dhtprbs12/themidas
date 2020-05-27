@@ -27,13 +27,13 @@ function KellyFormula() {
                 <TableCell style={{ fontWeight: 'bold' }} component="th" scope="row">
                   P
                 </TableCell>
-                <TableCell align="left">Percentage of probability to win</TableCell>
+                <TableCell align="left">Probability to win</TableCell>
               </TableRow>
               <TableRow key={'Profit'}>
                 <TableCell style={{ fontWeight: 'bold' }} component="th" scope="row">
                   R
                 </TableCell>
-                <TableCell align="left">Profit/Loss</TableCell>
+                <TableCell align="left">Expected profit/Expected loss</TableCell>
               </TableRow>
             </TableBody>
           </Table>

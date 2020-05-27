@@ -9,7 +9,7 @@ import ReactLoading from 'react-loading';
 import PeriodSelection from './PeriodSelection'
 import { INTRA_DAILY_API_CALL, WEEKLY_API_CALL, MONTHLY_API_CALL, YEARLY_API_CALL, FIVE_YEAR_API_CALL, OVER_TWENTY_YEAR_API_CALL } from "../auth/apiCall";
 import StockInfo from "./StockInfo";
-import { Grid } from "@material-ui/core";
+import { Grid, Modal, Fade, makeStyles, Theme, createStyles, Backdrop, Button } from "@material-ui/core";
 import CompanyCalculator from './CompanyCalculator'
 
 
@@ -29,6 +29,22 @@ interface ChartProps {
   name: string
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paper: {
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+  }),
+);
+
 function CustomTooltip({ payload, active }) {
   if (active && payload) {
     return (
@@ -43,22 +59,6 @@ function CustomTooltip({ payload, active }) {
   return null;
 }
 
-/**
- * @param array 
- * need to convert string that comes from server to number. 
- * even if we set Stock props:number it doesn't automatically map string to map
- */
-export async function convertToNumber(array: Array<Stock>) {
-  for (let i = 0; i < array.length; i++) {
-    array[i].open = Number(array[i].open)
-    array[i].high = Number(array[i].high)
-    array[i].low = Number(array[i].low)
-    array[i].close = Number(array[i].close)
-    array[i].volume = Number(array[i].volume)
-    array[i].dividend = Number(array[i].dividend)
-  }
-  return array
-}
 
 const Chart: React.FC<ChartProps> = props => {
 
@@ -66,6 +66,40 @@ const Chart: React.FC<ChartProps> = props => {
   const [loading, setLoading] = useState<boolean>(false)
   const [array, setArray] = useState<Array<Stock>>([])
   const [defaultValue, setDefaultValue] = useState<string>('')
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  /**
+ * @param array 
+ * need to convert string that comes from server to number. 
+ * even if we set Stock props:number it doesn't automatically map string to map
+ */
+  async function convertToNumber(array: Array<Stock>) {
+
+    if (array.length <= 0) {
+      handleOpen()
+      return array
+    }
+
+    for (let i = 0; i < array.length; i++) {
+      array[i].open = Number(array[i].open)
+      array[i].high = Number(array[i].high)
+      array[i].low = Number(array[i].low)
+      array[i].close = Number(array[i].close)
+      array[i].volume = Number(array[i].volume)
+      array[i].dividend = Number(array[i].dividend)
+    }
+    return array
+  }
+
+  const handleOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
+  const classes = useStyles();
+
   useEffect(() => {
     setLoading(true)
     setDefaultValue('1D')
@@ -78,7 +112,7 @@ const Chart: React.FC<ChartProps> = props => {
       }
 
     }
-    //API_CALL()
+    API_CALL()
     setLoading(false)
   }, [symbol])
 
@@ -179,6 +213,27 @@ const Chart: React.FC<ChartProps> = props => {
           {symbol !== '' && <StockInfo symbol={symbol} />}
         </Grid>
       </Grid>
+      {/* when user exceeds the limitation of calling API, pops up modal */}
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={isModalOpen}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={isModalOpen}>
+          <div className={classes.paper}>
+            <h2 id="transition-modal-title">Caution</h2>
+            <p id="transition-modal-description">You have exceeded a maximum API calls (5 API calls/min). Try again in 1 minute.</p>
+            <Button style={{ float: 'right', marginTop: '10px' }} variant="outlined" size='small' onClick={handleClose}>CLOSE</Button>
+          </div>
+        </Fade>
+      </Modal>
     </>
   );
 };

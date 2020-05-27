@@ -1,41 +1,12 @@
 .search {
-  width: 80%;
+  width: 100%;
   height: 100%;
   float: right;
   display: flex;
 }
 
-.search-input {
-  height: 60px;
-  width: 100%;
-  /* box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1); */
-  /* to make input and a vertically center*/
-  display: flex;
-}
-
-.search-input input {
-  /* width: 600px; */
-  height: 38px;
-  border-radius: 30px;
-  box-shadow: 2px 4px 8px 0 rgba(0, 0, 0, 0.15);
-  font-size: 100%;
-  padding: 0 58px 0 28px;
-}
-
-.search-input input:focus {
-  /* to disable blue border when clicked*/
-  outline: none;
-}
-
-.search-input img {
-  width: 30px;
-  height: 38px;
-  margin-left: 20px;
-  margin-top: 5px;
-}
-
-.search-input img:hover {
-  cursor: pointer;
+.makeStyles-input-12 > .MuiInputBase-input{
+  padding: 0.375rem 0.75rem !important
 }
 
 .search-left {
@@ -73,6 +44,10 @@
   
 }
 
+button{
+  box-shadow: none !important;
+}
+
 .search-element {
   height: 200px;
   border-radius: 20px;
@@ -83,6 +58,8 @@
   font-family: "Abel";
   padding: 0 !important;
   overflow: hidden;
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.15),
+    0 5px 15px 0 rgba(0, 0, 0, 0.08);
 }
 
 .MuiButtonBase-root{
@@ -107,4 +84,47 @@
     0 5px 15px 0 rgba(0, 0, 0, 0.08);
   box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.15),
     0 5px 15px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* right drawer */
+.right-drawer-button{
+  display: none;
+  width: 30px;
+  height: 30px;
+  box-shadow: none !important;
+  background-color: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  /* remove default blue background color when button is clicked*/
+  border: none;
+  outline: 0 !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.right-drawer-button:hover{
+  background-color: lightgray !important;
+}
+.company-image{
+  width: 20px;
+  height: 20px;
+}
+
+@media(max-width: 1200px){
+  .search-left{
+    display: none;
+  }
+  .search-right{
+    width: 100%;
+    margin-left: 0;
+  }
+  .search{
+    float: none;
+    margin: 0 auto;
+    width: 97%;
+  }
+  /* right-drawer */
+  .right-drawer-button{
+    display: block;
+  }
 }

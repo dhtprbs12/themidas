@@ -25,27 +25,27 @@ function ExpectedValueFormula() {
               </TableRow>
               <TableRow key={'Prob.P'}>
                 <TableCell style={{ fontWeight: 'bold' }} component="th" scope="row">
-                  Prob.P
+                  Probability profit
                 </TableCell>
-                <TableCell align="left">Percentage of probability to win</TableCell>
+                <TableCell align="left">Probability to win</TableCell>
               </TableRow>
               <TableRow key={'Profit'}>
                 <TableCell style={{ fontWeight: 'bold' }} component="th" scope="row">
-                  Profit
+                  Expected profit
                 </TableCell>
-                <TableCell align="left">Profit how much investors expect to earn</TableCell>
+                <TableCell align="left">How much I expect to earn</TableCell>
               </TableRow>
               <TableRow key={'Prob.L'}>
                 <TableCell style={{ fontWeight: 'bold' }} component="th" scope="row">
-                  Prob.L
+                  Probability loss
                 </TableCell>
-                <TableCell align="left">Percentage of probability to lose</TableCell>
+                <TableCell align="left">Probability to lose</TableCell>
               </TableRow>
               <TableRow key={'Loss'}>
                 <TableCell style={{ fontWeight: 'bold' }} component="th" scope="row">
-                  Loss
+                  Expected loss
                 </TableCell>
-                <TableCell align="left">Profit how much investors expect to lose</TableCell>
+                <TableCell align="left">How much I expect to lose</TableCell>
               </TableRow>
             </TableBody>
           </Table>

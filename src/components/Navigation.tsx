@@ -15,14 +15,14 @@ const Navigation: React.FC = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 500px)')
+    const mediaQuery = window.matchMedia('(max-width: 1200px)')
     mediaQuery.addListener(handleMediaQueryChange)
     handleMediaQueryChange(mediaQuery)
 
     return () => {
       mediaQuery.removeListener(handleMediaQueryChange)
     }
-  })
+  }, [])
 
   const handleMediaQueryChange = mediaQuery => {
     if (mediaQuery.matches) {
