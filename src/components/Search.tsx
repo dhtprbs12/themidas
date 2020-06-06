@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../css/Search.css";
-import searchImage from "../images/search.svg";
 import { useApolloClient } from "@apollo/react-hooks";
 import { GET_COMPANIES } from '../query/getCompanies'
 import { GET_AUTOCOMPLETE_COMPANIES } from '../query/getAutoCompleteCompanies'

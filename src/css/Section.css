@@ -1,9 +1,11 @@
 .section {
-  overflow: hidden;
-  width: 90%;
-  margin: 0 auto;
-  text-align: center;
+  width: 100%;
+  margin-top: 30px;
   height: auto;
+}
+
+.section > .makeStyles-root-10{
+  /* margin: 0 auto; */
 }
 
 @media (max-width: 1220px) {
