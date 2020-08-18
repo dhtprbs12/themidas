@@ -4,12 +4,24 @@
   height: auto;
 }
 
-.section > .makeStyles-root-10{
-  /* margin: 0 auto; */
+.section-container{
+  width: 90%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
 }
 
-@media (max-width: 1220px) {
-  .section {
-    margin-top: 170px;
+.mostPopular{
+  margin: 5px;
+  padding: 5px;
+}
+
+@media (max-width: 900px) {
+  .section-container{
+    grid-template-rows: repeat(4,auto);
+    grid-template-columns: none;
+    row-gap: 20px;
+    align-items: center;
+    justify-items: center;
   }
 }
