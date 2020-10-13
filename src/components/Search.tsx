@@ -69,7 +69,7 @@ const Search: React.FC<Props> = (props: Props) => {
         type: type,
         id: id,
         industry: sector
-      }, fetchPolicy: 'cache-first'
+      }, fetchPolicy: 'network-only'
     })
     const { companies }: { companies: Array<Company> } = data
     setCompanyArray(prevArray => prevArray.concat(companies))

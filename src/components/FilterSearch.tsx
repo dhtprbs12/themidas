@@ -25,7 +25,7 @@ const useStyles = makeStyles(() =>
 
 const FilterSearch: React.FC = () => {
 
-	const [typesSelected, setTypesSelected] = useState('AMEX')
+	const [typesSelected, setTypesSelected] = useState('NASDAQ')
 	const [sectorsSelected, setSectorsSelected] = useState('Finance')
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 	const [isSmallScreen, setIsSmallScreen] = useState(false)
