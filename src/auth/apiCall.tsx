@@ -116,3 +116,21 @@ export const OVER_TWENTY_YEAR_API_CALL = (symbol: string) => {
       })
   })
 };
+
+// Yahoo Finance API call
+export const GET_COMPANY_ANALYSIS = (symbol: string) => {
+  const API_CALL = `http://localhost:4000/get-company-analysis/${symbol}`;
+
+  return new Promise((resolve, reject) => {
+    fetch(API_CALL)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        resolve(res.json());
+      })
+      .catch(err => {
+        reject(err);
+      })
+  })
+};
