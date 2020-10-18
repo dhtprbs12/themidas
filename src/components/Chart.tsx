@@ -10,9 +10,9 @@ import PeriodSelection from './PeriodSelection'
 import { INTRA_DAILY_API_CALL, WEEKLY_API_CALL, MONTHLY_API_CALL, YEARLY_API_CALL, FIVE_YEAR_API_CALL, OVER_TWENTY_YEAR_API_CALL, GET_COMPANY_ANALYSIS } from "../auth/apiCall";
 import StockInfo from "./StockInfo";
 import { Grid, Modal, Fade, makeStyles, Theme, createStyles, Backdrop, Button } from "@material-ui/core";
-import CompanyCalculator from './CompanyCalculator'
 import CompanyNameWithValue from './CompanyNameWithValue'
 import '../css/Chart.css'
+import CompanyValue from "./CompanyValue";
 
 
 export type Stock = {
@@ -111,7 +111,6 @@ const Chart: React.FC<ChartProps> = props => {
         // as Array<Stock> cast `unknown` type to `Array<Stock>`
         const data = await INTRA_DAILY_API_CALL(symbol) as Array<Stock>
         setArray(await convertToNumber(data))
-        console.log(await GET_COMPANY_ANALYSIS(symbol))
       }
 
     }
@@ -180,7 +179,8 @@ const Chart: React.FC<ChartProps> = props => {
 
   return (
     <>
-      <CompanyCalculator />
+      {/* <CompanyCalculator /> */}
+      <CompanyValue />
       <Grid className="chart" container spacing={3}>
         <Grid item className='chart-container'>
           {/* <h3 className='chart-title'>{name}</h3> */}
