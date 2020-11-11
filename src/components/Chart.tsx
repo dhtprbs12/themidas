@@ -180,7 +180,7 @@ const Chart: React.FC<ChartProps> = props => {
   return (
     <>
       {/* <CompanyCalculator /> */}
-      <CompanyValue />
+      <CompanyValue symbol={symbol} />
       <Grid className="chart" container spacing={3}>
         <Grid item className='chart-container'>
           {/* <h3 className='chart-title'>{name}</h3> */}

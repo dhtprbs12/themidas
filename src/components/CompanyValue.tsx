@@ -1,8 +1,42 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Select } from "@material-ui/core";
 import React from "react";
+import { COMPANY_ANALYSIS_API_CALL } from "../auth/apiCall";
 import '../css/CompanyValue.css'
 
-function CompanyValue() {
+type Props = {
+  symbol: string
+}
+
+type Analysis = {
+  shortTerm: number | undefined,
+  longTerm: number,
+  currentPrice: number
+}
+
+function CompanyValue(props: Props) {
+  const { symbol } = props
+  const [retention, setRetention] = React.useState('Short Retention')
+  const [object, setObject] = React.useState<Analysis>()
+
+  React.useEffect(() => {
+    async function API_CALL() {
+      await COMPANY_ANALYSIS_API_CALL(symbol)
+        .then(data => {
+          const result = data as Analysis
+          console.log(result)
+          setObject(result)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+    API_CALL()
+  }, [symbol])
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    setRetention(event.target.value);
+  };
 
   function getEvaluation(diff: number): { name: string; value: string } {
     if (diff == 0) {
@@ -17,6 +51,18 @@ function CompanyValue() {
   return (
     <Grid className='company-value-container'>
       <h3 className='analysis-title'>{'Analysis'}</h3>
+      <Select
+        native
+        className='retention'
+        value={retention}
+        onChange={handleChange}
+        inputProps={{
+          name: 'retention',
+        }}
+      >
+        <option value={'Short Retention'}>{'Short Retention'}</option>
+        <option value={'Long Retention'}>{'Long Retention'}</option>
+      </Select>
       <Grid className='analysis-info'>
         <ul>
           <li><span>{`Proper price:`}</span><h5>{'$124'}</h5></li>
