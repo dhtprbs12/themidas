@@ -11,12 +11,11 @@
 
 .search-left {
   width: 55%;
-  height: 80%;
 }
 
 .search-list{
   width: 100%;
-  min-height: 80%;
+  height: 600px;
   overflow-y: auto;
 }
 .search-right{

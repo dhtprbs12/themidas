@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../css/Search.css";
-import { useApolloClient } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { GET_COMPANIES } from '../query/getCompanies'
-import { GET_AUTOCOMPLETE_COMPANIES } from '../query/getAutoCompleteCompanies'
 import CompanyDetail from "./CompanyDetail";
-import SearchElement from "./SearchElement";
-import { makeStyles, Theme, createStyles, Drawer, Paper, InputBase, IconButton } from "@material-ui/core";
+import { makeStyles, Theme, createStyles } from "@material-ui/core";
 import company from '../images/company.svg'
-import clsx from 'clsx';
-import SearchIcon from '@material-ui/icons/Search';
+import CircularLoading from "./CircularLoading";
+import SmallSearchScreen from "./SmallSearchScreen";
+import NormalSearchScreen from "./NormalSearchScreen";
+import InputField from "./InputField";
 
-type Company = {
+export type Company = {
   id: number,
   symbol: string,
   name: string,
@@ -21,7 +21,7 @@ type Company = {
 
 type Props = {
   type: string
-  sector: string
+  industry: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -48,42 +48,40 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 const Search: React.FC<Props> = (props: Props) => {
-  const { type, sector } = props
-  const [companyName, setCompanyName] = useState<string>('');
-  const [companySymbol, setCompanySymbol] = useState<string>('');
+  const { type, industry } = props
+  const [currentCompany, setCurrentCompany] = useState<Company>()
   const [companyArr, setCompanyArray] = useState<Array<Company>>([])
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isSmallScreen, setIsSmallScreen] = useState(false)
+  const [id, setId] = useState<number>(0)
+  const classes = useStyles();
 
-  const client = useApolloClient()
-  async function runQuery(id: number) {
-    if (inputRef.current) {
-      inputRef.current.value = ''
-    }
-    if (id === 0) {
-      setCompanyArray([])
-    }
-    const { data, errors, loading } = await client.query({
-      query: GET_COMPANIES, variables: {
-        type: type,
-        id: id,
-        industry: sector
-      }, fetchPolicy: 'network-only'
-    })
-    const { companies }: { companies: Array<Company> } = data
-    setCompanyArray(prevArray => prevArray.concat(companies))
-    return { companies, errors, loading }
-  }
+  const { data, loading, error, refetch } = useQuery<{ companies: Array<Company> }, { type: string, id: number, industry: string }>(GET_COMPANIES, {
+    variables: {
+      type: type,
+      id: id,
+      industry: industry
+    },
+    fetchPolicy: 'cache-first',
+    onCompleted: (data) => {
+      const companies = data.companies as Array<Company>
+      if (id === 0) {
+        setCurrentCompany(companies[0])
+        setCompanyArray([])
+        setCompanyArray(companies)
+      } else {
+        setCompanyArray(prevArray => prevArray.concat(companies))
+      }
+    },
+    // should be true to call `onCompleted` when refetch 
+    notifyOnNetworkStatusChange: true
+  })
 
+  // this is only called only if either "type" or "sector" gets changed, so should always starts from 0
   useEffect(() => {
-    async function run() {
-      const { companies } = await runQuery(0)
-      setCompanySymbol(companies[0].symbol)
-      setCompanyName(companies[0].name)
-    }
-    run()
-  }, [type, sector])
+    setId(0)
+  }, [type, industry])
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 1200px)')
@@ -104,36 +102,27 @@ const Search: React.FC<Props> = (props: Props) => {
     }
   }
 
-  const companyClick = (name: string, symbol: string) => {
-    setCompanySymbol(symbol)
-    setCompanyName(name);
+  // if (id === 0 && loading) {
+  //   return <CircularLoading />
+  // }
+
+  if (error) {
+    return null
+  }
+
+  const companyClick = (company: Company) => {
+    setCurrentCompany(company)
     toggleDrawer()
   };
-
-  const onInput = async (event) => {
-    event.preventDefault()
-    const value = event.target.value
-    if (value === '') {
-      runQuery(0)
-      return
-    }
-    const { data, errors, loading } = await client.query({
-      query: GET_AUTOCOMPLETE_COMPANIES, variables: {
-        name: value
-      },
-      fetchPolicy: 'cache-first'
-    })
-    const { autoCompleteCompanies }: { autoCompleteCompanies: Array<Company> } = data
-    setCompanyArray(autoCompleteCompanies)
-  }
 
   function handleScroll(event) {
     var node = event.target;
     const bottom = node.scrollHeight - node.scrollTop === node.clientHeight;
-    const inputValue = inputRef.current?.value === ''
-    if (inputValue && bottom && companyArr.length > 0) {
+    const inputValue = inputRef.current?.value === '' || (inputRef.current?.value === undefined)
+    const isSearchList = node.className === 'search-list'
+    if (inputValue && bottom && companyArr.length > 0 && isSearchList) {
       const index = companyArr[companyArr.length - 1].id
-      runQuery(Number(index))
+      setId(Number(index))
     }
   }
 
@@ -141,53 +130,27 @@ const Search: React.FC<Props> = (props: Props) => {
     setIsDrawerOpen(!isDrawerOpen)
   }
 
-  const classes = useStyles();
+  const inputField = <InputField refetch={refetch} id={id} setId={setId} setCompanyArray={setCompanyArray} inputRef={inputRef} />
 
-  const searchElements = (
+  return (
     <>
-      <Paper component="form" className={classes.root}>
-        <InputBase
-          onChange={onInput}
-          ref={inputRef}
-          className={classes.input}
-          placeholder="Search a company by name.."
-        />
-        <IconButton type="submit" className={classes.iconButton} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-      </Paper>
-      <div className='search-list'>
-        {companyArr.length > 0 ? companyArr.map((company: Company, index: number) => (
-          <SearchElement key={index} data-index={company.id} name={company.name} symbol={company.symbol} companyClick={companyClick} industry={company.industry} />
-        )) : <h3>No results found</h3>}
+      <div className="search">
+        {isSmallScreen
+          ?
+          <SmallSearchScreen isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} handleScroll={handleScroll} companyArr={companyArr} companyClick={companyClick} drawerWidth={classes.drawerWidth} inputField={inputField} />
+          :
+          <NormalSearchScreen handleScroll={handleScroll} companyArr={companyArr} companyClick={companyClick} inputField={inputField} />
+        }
+        <div className="search-right">
+          <CompanyDetail symbol={currentCompany?.symbol || ''} name={currentCompany?.name || ''}
+          />
+        </div>
+        <button onClick={toggleDrawer} className='right-drawer-button'>
+          <img className="company-image" src={company} alt="company.svg" />
+        </button>
       </div>
     </>
   )
-
-  return (
-    <div className="search">
-      {isSmallScreen ? <Drawer
-        anchor='right'
-        open={isDrawerOpen}
-        onClose={toggleDrawer}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}>
-        <div className={clsx(classes.drawerWidth)} onScroll={handleScroll}>
-          {searchElements}
-        </div>
-      </Drawer> : <div className="search-left" onScroll={handleScroll}>
-          {searchElements}
-        </div>}
-      <div className="search-right">
-        <CompanyDetail symbol={companySymbol} name={companyName}
-        />
-      </div>
-      <button onClick={toggleDrawer} className='right-drawer-button'>
-        <img className="company-image" src={company} alt="company.svg" />
-      </button>
-    </div>
-  );
-};
+}
 
 export default Search;

@@ -123,14 +123,12 @@ export const COMPANY_ANALYSIS_API_CALL = (symbol: string) => {
   return new Promise((resolve, reject) => {
     fetch(API_CALL)
       .then(res => {
-        console.log(res)
         if (!res.ok) {
           throw new Error(res.statusText);
         }
         resolve(res.json());
       })
       .catch(err => {
-        console.log(err)
         reject(err);
       })
   })

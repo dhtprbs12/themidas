@@ -1,0 +1,30 @@
+import React from "react";
+import { Company } from "./Search";
+import SearchElement from "./SearchElement";
+
+type Props = {
+  handleScroll: (event: any) => void
+  companyArr: Array<Company>
+  companyClick: (company: Company) => void
+  inputField: React.ReactNode
+}
+
+function NormalSearchScreen(props: Props) {
+  const { handleScroll, companyClick, companyArr, inputField } = props
+
+  return (
+    <div className="search-left" onScroll={handleScroll}>
+      {inputField}
+      <div className='search-list'>
+        {companyArr && companyArr.length > 0 ? companyArr.map((company: Company, index: number) => (
+          <SearchElement key={index} data-index={company.id} name={company.name} symbol={company.symbol} companyClick={() => companyClick(company)} industry={company.industry} />
+        )) : <h3>No results found</h3>}
+      </div>
+    </div>
+  )
+}
+
+export default NormalSearchScreen;
+
+
+

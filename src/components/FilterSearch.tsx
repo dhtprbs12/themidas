@@ -25,8 +25,8 @@ const useStyles = makeStyles(() =>
 
 const FilterSearch: React.FC = () => {
 
-	const [typesSelected, setTypesSelected] = useState('NASDAQ')
-	const [sectorsSelected, setSectorsSelected] = useState('Finance')
+	const [typeSelected, setTypeSelected] = useState('NASDAQ')
+	const [industrySelected, setIndustrySelected] = useState('Finance')
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 	const [isSmallScreen, setIsSmallScreen] = useState(false)
 	const classes = useStyles();
@@ -51,12 +51,12 @@ const FilterSearch: React.FC = () => {
 	}
 
 
-	const typesSelect = (option) => {
-		setTypesSelected(option.value)
+	const typeSelect = (option) => {
+		setTypeSelected(option.value)
 	}
 
-	const sectorsSelect = (option) => {
-		setSectorsSelected(option.value)
+	const industrySelect = (option) => {
+		setIndustrySelected(option.value)
 	}
 
 
@@ -68,11 +68,11 @@ const FilterSearch: React.FC = () => {
 		<div className='filter-container'>
 			<div className='filter-types'>
 				<h4>Type</h4>
-				<Dropdown options={typeOptions} onChange={typesSelect} value={typesSelected} placeholder="Select a type" />
+				<Dropdown options={typeOptions} onChange={typeSelect} value={typeSelected} placeholder="Select a type" />
 			</div>
 			<div className="filter-sectors">
 				<h4>Industry</h4>
-				<Dropdown options={industryOptions} onChange={sectorsSelect} value={sectorsSelected} placeholder="Select a industry" />
+				<Dropdown options={industryOptions} onChange={industrySelect} value={industrySelected} placeholder="Select a industry" />
 			</div>
 		</div>
 	);
@@ -94,7 +94,7 @@ const FilterSearch: React.FC = () => {
 				}}>
 				<div className={clsx(classes.drawerWidth)}>{filter}</div>
 			</Drawer> : <React.Fragment>{filter}</React.Fragment>}
-			<Search type={typesSelected} sector={sectorsSelected} />
+			<Search type={typeSelected} industry={industrySelected} />
 		</div>
 	)
 }
