@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import About from "./About";
 import FilterSearch from "./FilterSearch";
 import Home from "./Home";
-import Contact from "./Contact";
+import Review from "./Review";
 import { createBrowserHistory } from "history";
 import FormatListBulletedOutlinedIcon from '@material-ui/icons/FormatListBulletedOutlined';
 
@@ -46,7 +46,7 @@ const Navigation: React.FC = () => {
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/markets">Markets/Types</Link>
-          <Link to="/contact">Contact</Link>
+          <Link to="/contact">Review</Link>
         </nav>}
         <button onClick={toggleNavigation} className='responsible-header-image'>
           <FormatListBulletedOutlinedIcon />
@@ -55,7 +55,7 @@ const Navigation: React.FC = () => {
       <Route path="/" exact strict render={() => <Home />} />
       <Route path="/about" exact strict render={() => <About />} />
       <Route path="/markets" exact strict render={() => <FilterSearch />} />
-      <Route path="/contact" exact strict render={() => <Contact />} />
+      <Route path="/contact" exact strict render={() => <Review />} />
     </Router>
   );
 };

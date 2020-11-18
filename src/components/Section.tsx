@@ -21,10 +21,28 @@ type FEEDBACK = {
   feedback: string
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '50%',
+      margin: '0 auto'
+    },
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      flexBasis: '33.33%',
+      flexShrink: 0,
+    },
+    secondaryHeading: {
+      fontSize: theme.typography.pxToRem(15),
+      color: theme.palette.text.secondary,
+    },
+  }),
+);
 
 const Section: React.FC = () => {
 
   const { data } = useQuery(GET_FEEDBACKS)
+  const classes = useStyles();
 
   const { feedbacks = [] }: { feedbacks: Array<FEEDBACK> } = data || {}
 
@@ -36,27 +54,26 @@ const Section: React.FC = () => {
         <MostPopular3 />
         <MostPopular4 />
       </div>
+      {
+        feedbacks.map((feedback: FEEDBACK) =>
+          <ExpansionPanel key={feedback.id}>
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography className={classes.heading}>{feedback.firstName}</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Typography>
+                {feedback.feedback}
+              </Typography>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>)
+      }
     </div>
   );
 };
 
 export default Section;
-
-// {
-//   feedbacks.map((feedback: FEEDBACK) =>
-//     <ExpansionPanel key={feedback.id}>
-//       <ExpansionPanelSummary
-//         expandIcon={<ExpandMoreIcon />}
-//         aria-controls="panel1a-content"
-//         id="panel1a-header"
-//       >
-//         <Typography className={classes.heading}>{feedback.firstName}</Typography>
-//       </ExpansionPanelSummary>
-//       <ExpansionPanelDetails>
-//         <Typography>
-//           {feedback.feedback}
-//         </Typography>
-//       </ExpansionPanelDetails>
-//     </ExpansionPanel>)
-// }
 

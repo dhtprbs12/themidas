@@ -7,6 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import issacNewton from '../images/issac-newton.jpg'
 
 const useStyles = makeStyles({
   root: {
@@ -26,16 +27,15 @@ const MostPopular3: React.FC = () => {
           <CardActionArea>
             <CardMedia
               className={classes.media}
-              image="/static/images/cards/contemplative-reptile.jpg"
-              title="Contemplative Reptile"
+              image={issacNewton}
+              title="Issac Newton"
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
-                Lizard
+                Issac Newton
           </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
-                Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                across all continents except Antarctica
+                Could calculate the motions of the heavenly bodies, but not the madness of the people
           </Typography>
             </CardContent>
           </CardActionArea>

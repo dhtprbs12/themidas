@@ -34,8 +34,7 @@ const MostPopular4: React.FC = () => {
                 Lizard
           </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
-                Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                across all continents except Antarctica
+                In the stock market, the most important organ is the stomach. It's not the brain.
           </Typography>
             </CardContent>
           </CardActionArea>

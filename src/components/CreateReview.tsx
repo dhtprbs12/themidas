@@ -1,11 +1,11 @@
+
 import React, { useState } from "react";
-import "../css/Contact.css";
 import { TextField, TextareaAutosize, Button, Modal, Fade, makeStyles, Theme, createStyles, Backdrop } from "@material-ui/core";
 import { CREATE_FEEDBACK } from '../mutation/createFeedback'
 import { useMutation } from '@apollo/react-hooks';
 import { ApolloError } from "apollo-boost";
 
-const Contact: React.FC = () => {
+const CreateReview: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const handleOpen = () => {
@@ -99,11 +99,12 @@ const Contact: React.FC = () => {
     }))
   }
   return (
-    <div className="contact">
-      <div className="contact-container">
-        <div className="contact-wrapper">
-          <h3 className="contact-form-h3">Contact Form</h3>
-          <div className="contact-form-name formGroup">
+
+    <div className="create-review">
+      <div className="create-review-container">
+        <div className="create-review-wrapper">
+          <h3 className="create-review-form-h3">Leave Feedback</h3>
+          <div className="create-review-form-name formGroup">
             <label>First Name</label>
             <TextField
               error={feedback.firstName === ''}
@@ -125,7 +126,7 @@ const Contact: React.FC = () => {
               value={feedback.lastName}
               onInput={onLastNameInput} />
           </div>
-          <div className="contact-form-email formGroup">
+          <div className="create-review-form-email formGroup">
             <div>
               <label>Email</label>
               <TextField
@@ -139,13 +140,13 @@ const Contact: React.FC = () => {
                 onInput={onEmailInput} />
             </div>
           </div>
-          <div className="contact-form-message formGroup">
+          <div className="create-review-form-message formGroup">
             <div>
-              <label>Message</label>
+              <label>Feedback</label>
               <TextareaAutosize
                 rows={7}
                 aria-label="maximum height"
-                placeholder="Leave message here"
+                placeholder="Leave feedback here..."
                 cols={30}
                 style={{ boxSizing: 'border-box' }}
                 onInput={onMessageInput}
@@ -153,7 +154,7 @@ const Contact: React.FC = () => {
               />
             </div>
           </div>
-          <div className="contact-form-button formGroup">
+          <div className="create-review-form-button formGroup">
             <div>
               <Button
                 disabled={!checkIfEveryFieldIsSet(feedback)}
@@ -220,4 +221,4 @@ function CustomizedModal(props: CustomizedModalProps) {
 
 }
 
-export default Contact;
+export default CreateReview;

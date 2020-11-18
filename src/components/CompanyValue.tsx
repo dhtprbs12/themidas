@@ -64,13 +64,13 @@ function CompanyValue(props: Props) {
     }
 
     if (retention === Retention.SHORT) {
-      return Number((object.currentPrice * object.shortTerm).toFixed(2))
+      return Number(object.shortTerm.toFixed(2))
     }
-    return Number((object.currentPrice * object.longTerm).toFixed(2))
+    return Number(object.longTerm.toFixed(2))
   }
 
   const properPrice = calculatePrice(object)
-  const difference = object ? object.currentPrice - properPrice : 0
+  const difference = object ? Number((object.currentPrice - properPrice).toFixed(2)) : 0
   const evaluation = object ? getEvaluation(difference) : EVALUATION.NO_DIFF
 
   return (

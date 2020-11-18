@@ -3,6 +3,7 @@ import React from "react";
 import SearchElement from "./SearchElement";
 import { Company } from "./Search";
 import clsx from "clsx";
+import CircularLoading from "./CircularLoading";
 
 type Props = {
   isDrawerOpen: boolean,
@@ -12,11 +13,12 @@ type Props = {
   companyClick: (company: Company) => void
   drawerWidth: {}
   inputField: React.ReactNode
+  loading: boolean
 }
 
 
 function SmallSearchScreen(props: Props) {
-  const { isDrawerOpen, toggleDrawer, handleScroll, companyClick, drawerWidth, companyArr, inputField } = props
+  const { isDrawerOpen, toggleDrawer, handleScroll, companyClick, drawerWidth, companyArr, inputField, loading } = props
 
 
   return (
@@ -30,6 +32,7 @@ function SmallSearchScreen(props: Props) {
       <div className={clsx(drawerWidth)} onScroll={handleScroll}>
         {inputField}
         <div className='search-list'>
+          {loading && <CircularLoading />}
           {companyArr && companyArr.length > 0 ? companyArr.map((company: Company, index: number) => (
             <SearchElement key={index} data-index={company.id} name={company.name} symbol={company.symbol} companyClick={() => companyClick(company)} industry={company.industry} />
           )) : <h3>No results found</h3>}

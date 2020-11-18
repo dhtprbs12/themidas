@@ -5,7 +5,6 @@ import { GET_COMPANIES } from '../query/getCompanies'
 import CompanyDetail from "./CompanyDetail";
 import { makeStyles, Theme, createStyles } from "@material-ui/core";
 import company from '../images/company.svg'
-import CircularLoading from "./CircularLoading";
 import SmallSearchScreen from "./SmallSearchScreen";
 import NormalSearchScreen from "./NormalSearchScreen";
 import InputField from "./InputField";
@@ -57,7 +56,7 @@ const Search: React.FC<Props> = (props: Props) => {
   const [id, setId] = useState<number>(0)
   const classes = useStyles();
 
-  const { data, loading, error, refetch } = useQuery<{ companies: Array<Company> }, { type: string, id: number, industry: string }>(GET_COMPANIES, {
+  const { loading, error, refetch } = useQuery<{ companies: Array<Company> }, { type: string, id: number, industry: string }>(GET_COMPANIES, {
     variables: {
       type: type,
       id: id,
@@ -102,10 +101,6 @@ const Search: React.FC<Props> = (props: Props) => {
     }
   }
 
-  // if (id === 0 && loading) {
-  //   return <CircularLoading />
-  // }
-
   if (error) {
     return null
   }
@@ -137,9 +132,22 @@ const Search: React.FC<Props> = (props: Props) => {
       <div className="search">
         {isSmallScreen
           ?
-          <SmallSearchScreen isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} handleScroll={handleScroll} companyArr={companyArr} companyClick={companyClick} drawerWidth={classes.drawerWidth} inputField={inputField} />
+          <SmallSearchScreen
+            isDrawerOpen={isDrawerOpen}
+            toggleDrawer={toggleDrawer}
+            handleScroll={handleScroll}
+            companyArr={companyArr}
+            companyClick={companyClick}
+            drawerWidth={classes.drawerWidth}
+            inputField={inputField}
+            loading={loading} />
           :
-          <NormalSearchScreen handleScroll={handleScroll} companyArr={companyArr} companyClick={companyClick} inputField={inputField} />
+          <NormalSearchScreen
+            handleScroll={handleScroll}
+            companyArr={companyArr}
+            companyClick={companyClick}
+            inputField={inputField}
+            loading={loading} />
         }
         <div className="search-right">
           <CompanyDetail symbol={currentCompany?.symbol || ''} name={currentCompany?.name || ''}
