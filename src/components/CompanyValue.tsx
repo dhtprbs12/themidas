@@ -2,9 +2,12 @@ import { Grid, Select } from "@material-ui/core";
 import React from "react";
 import { COMPANY_ANALYSIS_API_CALL } from "../auth/apiCall";
 import '../css/CompanyValue.css'
+import CompanyNameWithValue from "./CompanyNameWithValue";
+import CustomModal from "./CustomModal";
 
 type Props = {
   symbol: string
+  name: string
 }
 
 enum Retention {
@@ -25,10 +28,19 @@ type Analysis = {
   currentPrice: number
 }
 
-function CompanyValue(props: Props) {
-  const { symbol } = props
+export default function CompanyValue(props: Props) {
+  const { symbol, name } = props
   const [retention, setRetention] = React.useState(Retention.SHORT)
   const [object, setObject] = React.useState<Analysis>()
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
+
+  const handleOpen = () => {
+    setIsModalOpen(true);
+  }
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  }
 
   React.useEffect(() => {
     async function API_CALL() {
@@ -39,6 +51,8 @@ function CompanyValue(props: Props) {
         })
         .catch(err => {
           // throw error here 
+          handleOpen()
+          return <CustomModal isOpen={isModalOpen} message={err} handleClose={handleClose} />
         })
     }
     API_CALL()
@@ -70,8 +84,9 @@ function CompanyValue(props: Props) {
   }
 
   const properPrice = calculatePrice(object)
-  const difference = object ? Number((object.currentPrice - properPrice).toFixed(2)) : 0
-  const evaluation = object ? getEvaluation(difference) : EVALUATION.NO_DIFF
+  const currentPrice = object ? object.currentPrice : 0
+  const difference = Number((currentPrice - properPrice).toFixed(2))
+  const evaluation = getEvaluation(difference)
 
   return (
     <Grid className='company-value-container'>
@@ -91,13 +106,12 @@ function CompanyValue(props: Props) {
       <Grid className='analysis-info'>
         <ul>
           <li><span>{`Proper price: $`}</span><h5>{properPrice}</h5></li>
-          <li><span>{`Current price: $`}</span><h5>{object ? object.currentPrice : 0}</h5></li>
+          <li><span>{`Current price: $`}</span><h5>{currentPrice}</h5></li>
           <li><span>{`Difference: $`}</span><h5>{difference}</h5></li>
           <li><span>{`Evaluation:`}</span><h5 className={evaluation.name}>{evaluation.value}</h5></li>
         </ul>
       </Grid>
+      <CompanyNameWithValue symbol={symbol} name={name} value={currentPrice} />
     </Grid>
   )
 }
-
-export default CompanyValue

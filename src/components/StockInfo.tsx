@@ -12,7 +12,7 @@ type Props = {
 }
 
 
-const StockInfo: React.FC<Props> = (props: Props) => {
+export default function StockInfo (props: Props) {
 
   const { symbol } = props
   const [stockInfo, setStockInfo] = useState<Stock>()
@@ -88,5 +88,3 @@ const StockInfo: React.FC<Props> = (props: Props) => {
     </Grid>
   )
 }
-
-export default StockInfo

@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-const SearchElement: React.FC<Props> = (props: Props) => {
+export default function SearchElement(props: Props) {
 
   const { name, symbol, industry, companyClick } = props
   const classes = useStyles();
@@ -73,5 +73,3 @@ const SearchElement: React.FC<Props> = (props: Props) => {
     </div>
   )
 }
-
-export default SearchElement

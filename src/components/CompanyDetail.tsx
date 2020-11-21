@@ -7,12 +7,10 @@ type Props = {
   name: string
 }
 
-const CompanyDetail: React.FC<Props> = (props: Props) => {
+export default function CompanyDetail(props: Props) {
   const { symbol, name } = props
 
   return (
     <Chart symbol={symbol} name={name} />
   )
 }
-
-export default CompanyDetail

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   LineChart,
   Line,
@@ -7,12 +7,12 @@ import {
 } from "recharts";
 import ReactLoading from 'react-loading';
 import PeriodSelection from './PeriodSelection'
-import { INTRA_DAILY_API_CALL, WEEKLY_API_CALL, MONTHLY_API_CALL, YEARLY_API_CALL, FIVE_YEAR_API_CALL, OVER_TWENTY_YEAR_API_CALL, GET_COMPANY_ANALYSIS } from "../auth/apiCall";
+import { INTRA_DAILY_API_CALL, WEEKLY_API_CALL, MONTHLY_API_CALL, YEARLY_API_CALL, FIVE_YEAR_API_CALL, OVER_TWENTY_YEAR_API_CALL } from "../auth/apiCall";
 import StockInfo from "./StockInfo";
-import { Grid, Modal, Fade, makeStyles, Theme, createStyles, Backdrop, Button } from "@material-ui/core";
-import CompanyNameWithValue from './CompanyNameWithValue'
+import { Grid} from "@material-ui/core";
 import '../css/Chart.css'
 import CompanyValue from "./CompanyValue";
+import CustomModal from "./CustomModal";
 
 
 export type Stock = {
@@ -26,26 +26,10 @@ export type Stock = {
 }
 
 
-interface ChartProps {
+type Props = {
   symbol: string
   name: string
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-  }),
-);
 
 function CustomTooltip({ payload, active }) {
   if (active && payload) {
@@ -62,20 +46,20 @@ function CustomTooltip({ payload, active }) {
 }
 
 
-const Chart: React.FC<ChartProps> = props => {
+export default function Chart (props: Props){
 
   const { symbol, name } = props
-  const [loading, setLoading] = useState<boolean>(false)
-  const [array, setArray] = useState<Array<Stock>>([])
-  const [defaultValue, setDefaultValue] = useState<string>('')
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState<boolean>(false)
+  const [array, setArray] = React.useState<Array<Stock>>([])
+  const [defaultValue, setDefaultValue] = React.useState<string>('')
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
 
   /**
  * @param array 
  * need to convert string that comes from server to number. 
  * even if we set Stock props:number it doesn't automatically map string to map
  */
-  async function convertToNumber(array: Array<Stock>) {
+  function convertToNumber(array: Array<Stock>) {
 
     if (array.length <= 0) {
       handleOpen()
@@ -95,24 +79,27 @@ const Chart: React.FC<ChartProps> = props => {
 
   const handleOpen = () => {
     setIsModalOpen(true);
-  };
+  }
 
   const handleClose = () => {
     setIsModalOpen(false);
-  };
-  const classes = useStyles();
+  }
 
-  useEffect(() => {
+  React.useEffect(() => {
     setLoading(true)
     setDefaultValue('1D')
     async function API_CALL() {
       if (symbol !== '') {
-        // await 은 Promise 가 resolved 되어서 결과값이 넘어 올 때까지 기다리는 명령어 
-        // as Array<Stock> cast `unknown` type to `Array<Stock>`
-        const data = await INTRA_DAILY_API_CALL(symbol) as Array<Stock>
-        setArray(await convertToNumber(data))
+        await INTRA_DAILY_API_CALL(symbol)
+        .then(data => {
+          const result = data as Array<Stock>
+          setArray(convertToNumber(result))
+        })
+        .catch(err => {
+          handleOpen()
+          return <CustomModal isOpen={isModalOpen} message={err} handleClose={handleClose} />
+        })
       }
-
     }
     API_CALL()
     setLoading(false)
@@ -180,11 +167,9 @@ const Chart: React.FC<ChartProps> = props => {
   return (
     <>
       {/* <CompanyCalculator /> */}
-      <CompanyValue symbol={symbol} />
+      <CompanyValue symbol={symbol} name={name}/>
       <Grid className="chart" container spacing={3}>
         <Grid item className='chart-container'>
-          {/* <h3 className='chart-title'>{name}</h3> */}
-          <CompanyNameWithValue symbol={symbol} name={name} value={124.29} />
           {loading ?
             <ReactLoading height={250} className='loader' type={'bars'} color="lightgray" />
             :
@@ -218,28 +203,7 @@ const Chart: React.FC<ChartProps> = props => {
         </Grid>
       </Grid>
       {/* when user exceeds the limitation of calling API, pops up modal */}
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={isModalOpen}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={isModalOpen}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">Caution</h2>
-            <p id="transition-modal-description">You have exceeded a maximum API calls (5 API calls/min). Try again in 1 minute.</p>
-            <Button style={{ float: 'right', marginTop: '10px' }} variant="outlined" size='small' onClick={handleClose}>CLOSE</Button>
-          </div>
-        </Fade>
-      </Modal>
+      <CustomModal isOpen={isModalOpen} message={'You have exceeded a maximum API calls (5 API calls/min). Try again in 1 minute.'} handleClose={handleClose}/>
     </>
-  );
-};
-
-export default Chart;
+  )
+}

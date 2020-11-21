@@ -1,15 +1,9 @@
-.chart{
+.chart {
   font-family: "Abel";
   width: 100%;
 }
 
-.chart-container{
+.chart-container {
   width: 100%;
   text-align: center;
-}
-
-.company-name-with-value-container{
-  text-align: left;
-  font-family: "Abel";
-  margin: 20px 0 20px 20px;
 }

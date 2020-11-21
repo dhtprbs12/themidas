@@ -1,6 +1,6 @@
-.company-value-container{
+.company-value-container {
   margin: 20px 0 20px 20px;
-  font-family: 'Abel';
+  font-family: "Abel";
 }
 
 .analysis-title {
@@ -31,9 +31,15 @@
 }
 
 .neg-diff {
-  color: blue
+  color: blue;
 }
 
 .analysis-info span {
   margin-right: 10px;
+}
+
+.company-name-with-value-container {
+  text-align: left;
+  font-family: "Abel";
+  margin: 20px 0 20px 0;
 }

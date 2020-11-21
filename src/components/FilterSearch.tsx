@@ -23,7 +23,7 @@ const useStyles = makeStyles(() =>
 	}),
 );
 
-const FilterSearch: React.FC = () => {
+export default function FilterSearch (){
 
 	const [typeSelected, setTypeSelected] = useState('NASDAQ')
 	const [industrySelected, setIndustrySelected] = useState('Finance')
@@ -98,8 +98,6 @@ const FilterSearch: React.FC = () => {
 		</div>
 	)
 }
-
-export default FilterSearch;
 
 
 

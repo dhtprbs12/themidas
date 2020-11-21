@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-const Search: React.FC<Props> = (props: Props) => {
+export default function Search(props: Props) {
   const { type, industry } = props
   const [currentCompany, setCurrentCompany] = useState<Company>()
   const [companyArr, setCompanyArray] = useState<Array<Company>>([])
@@ -160,5 +160,3 @@ const Search: React.FC<Props> = (props: Props) => {
     </>
   )
 }
-
-export default Search;
