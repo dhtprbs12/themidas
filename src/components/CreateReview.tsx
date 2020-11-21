@@ -4,6 +4,7 @@ import { TextField, TextareaAutosize, Button, Modal, Fade, makeStyles, Theme, cr
 import { CREATE_FEEDBACK } from '../mutation/createFeedback'
 import { useMutation } from '@apollo/react-hooks';
 import { ApolloError } from "apollo-boost";
+import { GET_FEEDBACKS } from '../query/getFeedbacks'
 
 const CreateReview: React.FC = () => {
 
@@ -22,17 +23,24 @@ const CreateReview: React.FC = () => {
     { error: mutationError },
   ] = useMutation(CREATE_FEEDBACK, {
     onCompleted: handleOpen,
-    onError: handleOpen
+    onError: handleOpen,
+    refetchQueries: () => {
+      return [{
+        query: GET_FEEDBACKS
+    }]
+    }
   });
 
   const [feedback, setFeedback] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    message: ''
-  })
+    message: '',
+    title: ''
+  }
+  )
 
-  function checkIfEveryFieldIsSet(feedback: { firstName: string, lastName: string, email: string, message: string }) {
+  function checkIfEveryFieldIsSet(feedback: { firstName: string, lastName: string, email: string, message: string, title: string }) {
 
     if (feedback.firstName === '') {
       return false
@@ -46,6 +54,9 @@ const CreateReview: React.FC = () => {
     if (feedback.message === '') {
       return false
     }
+    if (feedback.title === '') {
+      return false
+    }
     return true
   }
 
@@ -55,7 +66,8 @@ const CreateReview: React.FC = () => {
       firstName: '',
       lastName: '',
       email: '',
-      message: ''
+      message: '',
+      title: ''
     }))
   }
 
@@ -63,7 +75,7 @@ const CreateReview: React.FC = () => {
   async function sendMsgBtnClicked() {
     if (checkIfEveryFieldIsSet(feedback)) {
       // mutation here
-      await createFeedback({ variables: { firstName: feedback.firstName, lastName: feedback.lastName, email: feedback.email, feedback: feedback.message } });
+      await createFeedback({ variables: { firstName: feedback.firstName, lastName: feedback.lastName, email: feedback.email, feedback: feedback.message, title: feedback.title } });
     }
   }
 
@@ -88,6 +100,14 @@ const CreateReview: React.FC = () => {
     setFeedback(prev => ({
       ...prev,
       email: value
+    }))
+  }
+
+  function onTitleInput(event) {
+    const value = event.target.value
+    setFeedback(prev => ({
+      ...prev,
+      title: value
     }))
   }
 
@@ -138,6 +158,20 @@ const CreateReview: React.FC = () => {
                 fullWidth
                 value={feedback.email}
                 onInput={onEmailInput} />
+            </div>
+          </div>
+          <div className="create-review-form-title formGroup">
+            <div>
+              <label>Title</label>
+              <TextField
+                error={feedback.title === ''}
+                helperText={(feedback.title === '') ? 'Required' : ''}
+                style={{ marginTop: '10px' }}
+                label="Title"
+                variant="outlined"
+                fullWidth
+                value={feedback.title}
+                onInput={onTitleInput} />
             </div>
           </div>
           <div className="create-review-form-message formGroup">

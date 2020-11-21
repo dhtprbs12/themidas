@@ -8,6 +8,8 @@ export const GET_FEEDBACKS = gql`
       lastName
       email
       feedback
+      createdAt
+      title
     }
   }
 `
